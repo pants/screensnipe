@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(screensnipe)
+project(screen_snipe)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 set(qhotkey_src QHotkey/QHotkey/qhotkey.cpp QHotkey/QHotkey/qhotkey_x11.cpp)
 
-add_executable(screensnipe ${qhotkey_src} src/main.cpp src/window/CaptureWindow.cpp src/window/CaptureWindow.h src/main/ScreenCapturer.cpp src/main/ScreenCapturer.h src/window/SettingsWindow.cpp src/window/SettingsWindow.h src/main/ScreenSnipe.cpp src/main/ScreenSnipe.h)
+add_executable(screen_snipe ${qhotkey_src} src/main.cpp src/window/capture_window.cpp src/window/capture_window.h src/main/screen_capturer.cpp src/main/screen_capturer.h src/window/settings_window.cpp src/window/settings_window.h src/main/screen_snipe.cpp src/main/screen_snipe.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC QHotkey/QHotkey)
-target_link_libraries(screensnipe Qt5::Widgets Qt5::X11Extras X11)
+target_link_libraries(screen_snipe Qt5::Widgets Qt5::X11Extras X11)

@@ -1,5 +1,5 @@
 #include <QApplication>
-#include "main/ScreenSnipe.h"
+#include "main/screen_snipe.h"
 
 int main(int argc, char *argv[]) {
     QApplication application(argc, argv);
