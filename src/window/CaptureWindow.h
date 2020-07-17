@@ -26,6 +26,7 @@ protected:
 
 private:
     QPoint m_start_mouse_pos = {0, 0};
+    bool m_started_selection = false;
 
 signals:
     void selectionMade(QRect t_selection);

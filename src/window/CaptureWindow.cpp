@@ -8,7 +8,10 @@ CaptureWindow::CaptureWindow() {
 void CaptureWindow::paintEvent(QPaintEvent *t_event) {
     QPainter painter(this);
 
+    //Background tint
     painter.fillRect(0, 0, this->width(), this->height(), QColor(0, 0, 0, 50));
+
+    if(!m_started_selection) return;
 
     QPoint mousePos = QCursor::pos();
 
@@ -21,6 +24,7 @@ void CaptureWindow::paintEvent(QPaintEvent *t_event) {
     int outlineOffsetX = (drawWidth < 0) ? -2 : 2;
     int outlineOffsetY = (drawHeight < 0) ? -2 : 2;
 
+    //Selection outline
     painter.fillRect(
             drawX - outlineOffsetX,
             drawY - outlineOffsetY,
@@ -34,6 +38,7 @@ void CaptureWindow::paintEvent(QPaintEvent *t_event) {
 
 void CaptureWindow::mousePressEvent(QMouseEvent *t_event) {
     m_start_mouse_pos = {t_event->x(), t_event->y()};
+    m_started_selection = true;
 }
 
 void CaptureWindow::mouseReleaseEvent(QMouseEvent *t_event) {
@@ -55,6 +60,8 @@ void CaptureWindow::mouseMoveEvent(QMouseEvent *t_event) {
 
 void CaptureWindow::displayCaptureWindow(const QPixmap &t_screenshot, QRect t_screenGeometry) {
     this->m_start_mouse_pos = {0, 0};
+    this->m_started_selection = false;
+
     QPalette palette;
     palette.setBrush(QPalette::Background, t_screenshot);
     this->setPalette(palette);
