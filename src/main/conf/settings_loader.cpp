@@ -14,6 +14,7 @@ void SettingsLoader::loadSettings() {
     file_name = value("name", "yyyy-MM/yyyy-MM-dd_HH-mm-ss").toString();
     file_format = value("format", "jpg").toString();
     file_path = value("path", QDir::homePath() + "/Pictures/screensnipe").toString();
+    file_image_quality = value("image_quality", 80).toInt();
     m_settings->endGroup();
 
     m_settings->sync();

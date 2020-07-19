@@ -11,6 +11,7 @@ public:
     QString file_path;
     QString file_name;
     QString file_format;
+    int file_image_quality;
 
     bool copy_to_clipboard = true;
 };

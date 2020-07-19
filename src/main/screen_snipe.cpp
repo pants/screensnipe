@@ -43,6 +43,6 @@ void ScreenSnipe::onSelectionMade(QRect t_selection) {
         }
 
         qDebug() << "Saving to file: " << fullPath;
-        screenshot.save(fullPath, format.toStdString().c_str());
+        screenshot.save(fullPath, format.toStdString().c_str(), k_settings.file_image_quality);
     }
 }
