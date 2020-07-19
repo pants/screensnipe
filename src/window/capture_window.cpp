@@ -5,6 +5,22 @@ CaptureWindow::CaptureWindow() {
     this->setWindowFlags(Qt::WindowType::X11BypassWindowManagerHint);
 }
 
+void CaptureWindow::displayCaptureWindow(const QPixmap &t_screenshot, QRect t_screenGeometry) {
+    this->m_start_mouse_pos = {0, 0};
+    this->m_started_selection = false;
+
+    QPalette palette;
+    palette.setBrush(QPalette::Background, t_screenshot);
+    this->setPalette(palette);
+
+    this->setGeometry(t_screenGeometry);
+
+    this->show();
+
+    //When using X11BypassWindowManagerHint this allows keyboard input into the window, needs to be called after show()
+    this->activateWindow();
+}
+
 void CaptureWindow::paintEvent(QPaintEvent *t_event) {
     QPainter painter(this);
 
@@ -58,18 +74,8 @@ void CaptureWindow::mouseMoveEvent(QMouseEvent *t_event) {
     repaint();
 }
 
-void CaptureWindow::displayCaptureWindow(const QPixmap &t_screenshot, QRect t_screenGeometry) {
-    this->m_start_mouse_pos = {0, 0};
-    this->m_started_selection = false;
-
-    QPalette palette;
-    palette.setBrush(QPalette::Background, t_screenshot);
-    this->setPalette(palette);
-
-    this->setGeometry(t_screenGeometry);
-
-    this->show();
-
-    //When using X11BypassWindowManagerHint this allows keyboard input into the window, needs to be called after show()
-    this->activateWindow();
+void CaptureWindow::keyReleaseEvent(QKeyEvent *event) {
+    if(event->key() == Qt::Key::Key_Escape){
+        this->hide();
+    }
 }

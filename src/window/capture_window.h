@@ -24,6 +24,8 @@ protected:
 
     void mouseMoveEvent(QMouseEvent *t_event) override;
 
+    void keyReleaseEvent(QKeyEvent *event) override;
+
 private:
     QPoint m_start_mouse_pos = {0, 0};
     bool m_started_selection = false;
