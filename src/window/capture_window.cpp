@@ -22,15 +22,23 @@ void CaptureWindow::displayCaptureWindow(const QPixmap &t_screenshot, QRect t_sc
 }
 
 void CaptureWindow::makeSelection(QPoint t_end_pos) {
-    int selection_x = m_start_mouse_pos.x();
-    int selection_y = m_start_mouse_pos.y();
+    int start_x = m_start_mouse_pos.x();
+    int start_y = m_start_mouse_pos.y();
+    int end_x = t_end_pos.x();
+    int end_y = t_end_pos.y();
 
-    int width = t_end_pos.x() - selection_x;
-    int height = t_end_pos.y() - selection_y;
+    int min_x = std::min(start_x, end_x);
+    int max_x = std::max(start_x, end_x);
+
+    int min_y = std::min(start_y, end_y);
+    int max_y = std::max(start_y, end_y);
+
+    int width = max_x - min_x;
+    int height = max_y - min_y;
 
     this->hide();
 
-    QRect selection = {selection_x, selection_y, width, height};
+    QRect selection = {min_x, min_y, width, height};
     emit selectionMade(selection);
 }
 
