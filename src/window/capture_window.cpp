@@ -27,7 +27,7 @@ void CaptureWindow::paintEvent(QPaintEvent *t_event) {
     //Background tint
     painter.fillRect(0, 0, this->width(), this->height(), QColor(0, 0, 0, 50));
 
-    if(!m_started_selection) return;
+    if (!m_started_selection) return;
 
     QPoint mousePos = QCursor::pos();
 
@@ -58,15 +58,28 @@ void CaptureWindow::mousePressEvent(QMouseEvent *t_event) {
 }
 
 void CaptureWindow::mouseReleaseEvent(QMouseEvent *t_event) {
-    int selectionX = m_start_mouse_pos.x();
-    int selectionY = m_start_mouse_pos.y();
+    //Cancels the drag selection
+    if (t_event->button() == Qt::MouseButton::RightButton) {
+        m_started_selection = false;
+        repaint();
+        return;
+    }
 
-    int width = t_event->x() - selectionX;
-    int height = t_event->y() - selectionY;
+    bool is_mouse_left = t_event->button() == Qt::MouseButton::LeftButton;
+
+    if (!m_started_selection || !is_mouse_left) {
+        return;
+    }
+
+    int selection_x = m_start_mouse_pos.x();
+    int selection_y = m_start_mouse_pos.y();
+
+    int width = t_event->x() - selection_x;
+    int height = t_event->y() - selection_y;
 
     this->hide();
 
-    QRect selection = {selectionX, selectionY, width, height};
+    QRect selection = {selection_x, selection_y, width, height};
     emit selectionMade(selection);
 }
 
@@ -74,8 +87,8 @@ void CaptureWindow::mouseMoveEvent(QMouseEvent *t_event) {
     repaint();
 }
 
-void CaptureWindow::keyReleaseEvent(QKeyEvent *event) {
-    if(event->key() == Qt::Key::Key_Escape){
+void CaptureWindow::keyReleaseEvent(QKeyEvent *t_event) {
+    if (t_event->key() == Qt::Key::Key_Escape) {
         this->hide();
     }
 }
