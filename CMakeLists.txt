@@ -11,9 +11,11 @@ find_package(Qt5Widgets REQUIRED)
 
 set(CMAKE_CXX_STANDARD 14)
 
+file(GLOB_RECURSE SOURCE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+
 set(qhotkey_src QHotkey/QHotkey/qhotkey.cpp QHotkey/QHotkey/qhotkey_x11.cpp)
 
-add_executable(screen_snipe ${qhotkey_src} src/main.cpp src/window/capture_window.cpp src/window/capture_window.h src/main/screen_capturer.cpp src/main/screen_capturer.h src/window/settings_window.cpp src/window/settings_window.h src/main/screen_snipe.cpp src/main/screen_snipe.h)
+add_executable(screen_snipe ${qhotkey_src} ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC QHotkey/QHotkey)
 target_link_libraries(screen_snipe Qt5::Widgets Qt5::X11Extras X11)
