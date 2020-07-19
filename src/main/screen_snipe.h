@@ -21,7 +21,7 @@ protected:
     void onSelectionMade(QRect t_selection);
 
 private:
-    const SettingValues k_settings = SettingsLoader();
+    const SettingsLoader k_settings = SettingsLoader();
 
     ScreenCapturer *m_screen_capturer = new ScreenCapturer();
     CaptureWindow *m_capture_window = new CaptureWindow();
