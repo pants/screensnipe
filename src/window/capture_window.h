@@ -30,6 +30,8 @@ private:
     QPoint m_start_mouse_pos = {0, 0};
     bool m_started_selection = false;
 
+    void makeSelection(QPoint t_end_pos);
+
 signals:
     void selectionMade(QRect t_selection);
 };

@@ -21,6 +21,19 @@ void CaptureWindow::displayCaptureWindow(const QPixmap &t_screenshot, QRect t_sc
     this->activateWindow();
 }
 
+void CaptureWindow::makeSelection(QPoint t_end_pos) {
+    int selection_x = m_start_mouse_pos.x();
+    int selection_y = m_start_mouse_pos.y();
+
+    int width = t_end_pos.x() - selection_x;
+    int height = t_end_pos.y() - selection_y;
+
+    this->hide();
+
+    QRect selection = {selection_x, selection_y, width, height};
+    emit selectionMade(selection);
+}
+
 void CaptureWindow::paintEvent(QPaintEvent *t_event) {
     QPainter painter(this);
 
@@ -46,7 +59,7 @@ void CaptureWindow::paintEvent(QPaintEvent *t_event) {
             drawY - outlineOffsetY,
             drawWidth + (outlineOffsetX * 2),
             drawHeight + (outlineOffsetY * 2),
-            QColor(100, 100, 100, 100)
+            QColor(120, 120, 120, 200)
     );
 
     painter.eraseRect(drawX, drawY, drawWidth, drawHeight);
@@ -58,7 +71,7 @@ void CaptureWindow::mousePressEvent(QMouseEvent *t_event) {
 }
 
 void CaptureWindow::mouseReleaseEvent(QMouseEvent *t_event) {
-    //Cancels the drag selection
+    //Cancels the drag selection when the user right clicks
     if (t_event->button() == Qt::MouseButton::RightButton) {
         m_started_selection = false;
         repaint();
@@ -71,16 +84,7 @@ void CaptureWindow::mouseReleaseEvent(QMouseEvent *t_event) {
         return;
     }
 
-    int selection_x = m_start_mouse_pos.x();
-    int selection_y = m_start_mouse_pos.y();
-
-    int width = t_event->x() - selection_x;
-    int height = t_event->y() - selection_y;
-
-    this->hide();
-
-    QRect selection = {selection_x, selection_y, width, height};
-    emit selectionMade(selection);
+    makeSelection(t_event->pos());
 }
 
 void CaptureWindow::mouseMoveEvent(QMouseEvent *t_event) {
