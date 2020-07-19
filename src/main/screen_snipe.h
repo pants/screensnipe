@@ -2,10 +2,13 @@
 #define SCREENSNIPE_SCREENSNIPE_H
 
 #include "screen_capturer.h"
+#include "conf/settings_loader.h"
 #include "../window/capture_window.h"
 #include <QApplication>
 #include <QHotkey>
 #include <QClipboard>
+#include <QDir>
+#include <QDateTime>
 
 class ScreenSnipe : public QObject {
 Q_OBJECT
@@ -18,6 +21,8 @@ protected:
     void onSelectionMade(QRect t_selection);
 
 private:
+    const SettingValues k_settings = SettingsLoader();
+
     ScreenCapturer *m_screen_capturer = new ScreenCapturer();
     CaptureWindow *m_capture_window = new CaptureWindow();
 
