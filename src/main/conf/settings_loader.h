@@ -15,8 +15,6 @@ public:
     QVariant value(const QString &key, const QVariant &defaultValue = QVariant());
 
 private:
-    SettingValues m_values = SettingValues();
-
     QSettings *m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,
                                           "screensnipe", "screensnipe");
 };
