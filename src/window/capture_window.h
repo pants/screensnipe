@@ -24,13 +24,21 @@ protected:
 
     void mouseMoveEvent(QMouseEvent *t_event) override;
 
-    void keyReleaseEvent(QKeyEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *t_event) override;
+
+    void keyPressEvent(QKeyEvent *t_event) override;
 
 private:
     QPoint m_start_mouse_pos = {0, 0};
-    bool m_started_selection = false;
+    QPoint m_last_mouse_pos = {0, 0};
 
+    bool m_started_selection = false;
+    bool m_shift_press = false;
+    bool m_ctrl_pressed = false;
+
+    void onInputEvent(bool t_pressed, QKeyEvent *t_event);
     void makeSelection(QPoint t_end_pos);
+    void moveSelection();
 
 signals:
     void selectionMade(QRect t_selection);

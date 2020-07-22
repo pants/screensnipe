@@ -52,25 +52,26 @@ void CaptureWindow::paintEvent(QPaintEvent *t_event) {
 
     QPoint mousePos = QCursor::pos();
 
-    int drawX = m_start_mouse_pos.x();
-    int drawY = m_start_mouse_pos.y();
+    int draw_x = m_start_mouse_pos.x();
+    int draw_y = m_start_mouse_pos.y();
 
-    int drawWidth = mousePos.x() - drawX;
-    int drawHeight = mousePos.y() - drawY;
+    int draw_height = mousePos.y() - draw_y;
+    //If ctrl is pressed, keep a 1:1 aspect ratio
+    int draw_width = m_shift_press ? draw_height : mousePos.x() - draw_x;
 
-    int outlineOffsetX = (drawWidth < 0) ? -2 : 2;
-    int outlineOffsetY = (drawHeight < 0) ? -2 : 2;
+    int outline_offset_x = (draw_width < 0) ? -2 : 2;
+    int outline_offset_y = (draw_height < 0) ? -2 : 2;
 
     //Selection outline
     painter.fillRect(
-            drawX - outlineOffsetX,
-            drawY - outlineOffsetY,
-            drawWidth + (outlineOffsetX * 2),
-            drawHeight + (outlineOffsetY * 2),
+            draw_x - outline_offset_x,
+            draw_y - outline_offset_y,
+            draw_width + (outline_offset_x * 2),
+            draw_height + (outline_offset_y * 2),
             QColor(120, 120, 120, 200)
     );
 
-    painter.eraseRect(drawX, drawY, drawWidth, drawHeight);
+    painter.eraseRect(draw_x, draw_y, draw_width, draw_height);
 }
 
 void CaptureWindow::mousePressEvent(QMouseEvent *t_event) {
@@ -96,11 +97,42 @@ void CaptureWindow::mouseReleaseEvent(QMouseEvent *t_event) {
 }
 
 void CaptureWindow::mouseMoveEvent(QMouseEvent *t_event) {
+    if (m_ctrl_pressed) {
+        moveSelection();
+    }
     repaint();
 }
 
+void CaptureWindow::keyPressEvent(QKeyEvent *t_event) {
+    bool is_pressed = true;
+    onInputEvent(is_pressed, t_event);
+}
+
 void CaptureWindow::keyReleaseEvent(QKeyEvent *t_event) {
-    if (t_event->key() == Qt::Key::Key_Escape) {
-        this->hide();
+    bool not_pressed = false;
+    onInputEvent(not_pressed, t_event);
+}
+
+void CaptureWindow::onInputEvent(bool t_pressed, QKeyEvent *t_event) {
+    switch (t_event->key()) {
+        case Qt::Key::Key_Escape:
+            this->hide();
+            break;
+        case Qt::Key::Key_Shift:
+            this->m_shift_press = t_pressed;
+            break;
+        case Qt::Key::Key_Control:
+            this->m_ctrl_pressed = t_pressed;
+            this->m_last_mouse_pos = QCursor::pos();
+            break;
+        default:
+            break;
     }
+}
+
+void CaptureWindow::moveSelection() {
+    QPoint current_pos = QCursor::pos();
+    QPoint cursor_difference = current_pos - m_last_mouse_pos;
+    this->m_start_mouse_pos += cursor_difference;
+    this->m_last_mouse_pos = current_pos;
 }
