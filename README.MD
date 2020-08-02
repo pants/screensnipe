@@ -6,18 +6,23 @@ Config path is generated at: `~/.config/screensnipe/screensnipe.ini`
 #### todo:
 - Config
     - [x] Keyboard Shortcuts
+    - [X] Hotkeys
     - [ ] Upload locations
     - [x] Screenshot save path
 - Selection options
     - [ ] Individual window selection 
-        - [ ] shortcut
+        - [ ] Hotkey
     - [ ] Monitor Selection
-        - [ ] shortcut
+        - [ ] Hotkey
 - UI 
     - [ ] Settings Window
     - [x] System tray icon
-- Image editing in capture window
-    - [ ] Draw censor box 
-    - [ ] Draw empty box
-    - [ ] Highlight box
-    - [ ] Marker
+- Capture Window
+    - Shortcuts
+        - [X] Move selection with key
+        - [X] Resize keeping 1:1 ratio
+    - Image editing
+        - [ ] Draw censor box 
+        - [ ] Draw empty box
+        - [ ] Highlight box
+        - [ ] Marker
