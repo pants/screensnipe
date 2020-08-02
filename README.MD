@@ -1,6 +1,8 @@
 # screensnipe
 screensnipe is a screenshot tool intended for Linux with the goals of remaining relatively simple and similar to ShareX in design
 
+Config path is generated at: `~/.config/screensnipe/screensnipe.ini`
+
 #### todo:
 - Config
     - [x] Keyboard Shortcuts
