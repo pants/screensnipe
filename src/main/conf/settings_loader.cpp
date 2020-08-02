@@ -18,8 +18,8 @@ void SettingsLoader::loadSettings() {
     m_settings->endGroup();
 
     m_settings->beginGroup("shortcuts");
-    shortcut_drag = value("shrotcut_drag", "Ctrl").toString().toLower();
-    shortcut_resize_ratio = value("shrotcut_resize_ratio", "Shift").toString().toLower();
+    shortcut_drag = value("shortcut_drag", "Ctrl").toString().toLower();
+    shortcut_resize_ratio = value("shortcut_resize_ratio", "Shift").toString().toLower();
     m_settings->endGroup();
 
     m_settings->sync();
