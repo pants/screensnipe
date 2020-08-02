@@ -9,6 +9,8 @@
 #include <QClipboard>
 #include <QDir>
 #include <QDateTime>
+#include <QSystemTrayIcon>
+#include <QMenu>
 
 class ScreenSnipe : public QObject {
 Q_OBJECT
@@ -31,6 +33,10 @@ private:
 
     QPixmap m_last_screenshot = QPixmap();
 
+    QSystemTrayIcon* m_tray_icon;
+
+    void exit();
+    QMenu* createTrayMenu();
     void takeScreenshot();
 };
 

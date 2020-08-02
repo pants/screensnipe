@@ -2,6 +2,19 @@
 
 ScreenSnipe::ScreenSnipe(QApplication *t_application) {
     this->m_application = t_application;
+
+    auto icon = QIcon("screensnipe_icon.png");
+
+    this->m_application->setWindowIcon(icon);
+
+    this->m_tray_icon = new QSystemTrayIcon(this);
+    this->m_tray_icon->setIcon(icon);
+
+    auto context_menu = createTrayMenu();
+    this->m_tray_icon->setContextMenu(context_menu);
+    this->m_tray_icon->show();
+
+
     QObject::connect(m_capture_window, &CaptureWindow::selectionMade, this, &ScreenSnipe::onSelectionMade);
 }
 
@@ -45,4 +58,23 @@ void ScreenSnipe::onSelectionMade(QRect t_selection) {
         qDebug() << "Saving to file: " << fullPath;
         screenshot.save(fullPath, format.toStdString().c_str(), k_settings.file_image_quality);
     }
+}
+
+QMenu* ScreenSnipe::createTrayMenu() {
+    auto quit_action = new QAction("&Quit", this);
+    connect(quit_action, &QAction::triggered, this, &ScreenSnipe::exit);
+
+    QMenu* menu = new QMenu();
+    menu->addAction("Settings");
+    menu->addSeparator();
+    menu->addAction(quit_action);
+
+    return menu;
+}
+
+void ScreenSnipe::exit() {
+    //Manually unregister hotkeys to prevent error logs
+    m_screenshot_hotkey->setRegistered(false);
+
+    QCoreApplication::exit(0);
 }

@@ -11,6 +11,9 @@ find_package(Qt5Widgets REQUIRED)
 
 set(CMAKE_CXX_STANDARD 14)
 
+file(GLOB IMAGE_RESOURCES "resources/*.png")
+file(COPY ${IMAGE_RESOURCES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 file(GLOB_RECURSE SOURCE_FILES "${CMAKE_SOURCE_DIR}/src/*.cpp")
 
 set(qhotkey_src QHotkey/QHotkey/qhotkey.cpp QHotkey/QHotkey/qhotkey_x11.cpp)
