@@ -14,6 +14,9 @@ public:
     int file_image_quality;
 
     bool copy_to_clipboard = true;
+
+    QString shortcut_drag;
+    QString shortcut_resize_ratio;
 };
 
 

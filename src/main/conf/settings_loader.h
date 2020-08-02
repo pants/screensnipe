@@ -12,7 +12,7 @@ public:
 
     void loadSettings();
 
-    QVariant value(const QString &key, const QVariant &defaultValue = QVariant());
+    QVariant value(const QString &t_key, const QVariant &t_default_value = QVariant());
 
 private:
     QSettings *m_settings = new QSettings(QSettings::IniFormat, QSettings::UserScope,

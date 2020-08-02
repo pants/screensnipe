@@ -26,7 +26,7 @@ private:
     const SettingsLoader k_settings = SettingsLoader();
 
     ScreenCapturer *m_screen_capturer = new ScreenCapturer();
-    CaptureWindow *m_capture_window = new CaptureWindow();
+    CaptureWindow *m_capture_window = new CaptureWindow(k_settings);
 
     QApplication *m_application = nullptr;
     QHotkey *m_screenshot_hotkey = nullptr;

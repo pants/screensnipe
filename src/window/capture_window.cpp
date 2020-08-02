@@ -1,6 +1,8 @@
 #include "capture_window.h"
 
-CaptureWindow::CaptureWindow() {
+#include <utility>
+
+CaptureWindow::CaptureWindow(SettingValues t_settings) : m_settings(std::move(t_settings)) {
     this->setWindowFlags(Qt::WindowStaysOnTopHint);
     this->setWindowFlags(Qt::WindowType::X11BypassWindowManagerHint);
 }
@@ -57,7 +59,7 @@ void CaptureWindow::paintEvent(QPaintEvent *t_event) {
 
     int draw_height = mousePos.y() - draw_y;
     //If ctrl is pressed, keep a 1:1 aspect ratio
-    int draw_width = m_shift_press ? draw_height : mousePos.x() - draw_x;
+    int draw_width = m_resize_selection_pressed ? draw_height : mousePos.x() - draw_x;
 
     int outline_offset_x = (draw_width < 0) ? -2 : 2;
     int outline_offset_y = (draw_height < 0) ? -2 : 2;
@@ -97,7 +99,7 @@ void CaptureWindow::mouseReleaseEvent(QMouseEvent *t_event) {
 }
 
 void CaptureWindow::mouseMoveEvent(QMouseEvent *t_event) {
-    if (m_ctrl_pressed) {
+    if (m_move_selection_pressed) {
         moveSelection();
     }
     repaint();
@@ -114,19 +116,28 @@ void CaptureWindow::keyReleaseEvent(QKeyEvent *t_event) {
 }
 
 void CaptureWindow::onInputEvent(bool t_pressed, QKeyEvent *t_event) {
-    switch (t_event->key()) {
-        case Qt::Key::Key_Escape:
-            this->hide();
-            break;
-        case Qt::Key::Key_Shift:
-            this->m_shift_press = t_pressed;
-            break;
+    auto key = keyToText(t_event->key());
+
+    if (key == m_settings.shortcut_drag) {
+        this->m_move_selection_pressed = t_pressed;
+        this->m_last_mouse_pos = QCursor::pos();
+    } else if (key == m_settings.shortcut_resize_ratio) {
+        this->m_resize_selection_pressed = t_pressed;
+    } else if (key == "esc") {
+        this->hide();
+    }
+}
+
+QString CaptureWindow::keyToText(int t_key) {
+    switch (t_key) {
         case Qt::Key::Key_Control:
-            this->m_ctrl_pressed = t_pressed;
-            this->m_last_mouse_pos = QCursor::pos();
-            break;
+            return "ctrl";
+        case Qt::Key::Key_Shift:
+            return "shift";
+        case Qt::Key::Key_Alt:
+            return "alt";
         default:
-            break;
+            return QKeySequence(t_key).toString().toLower();
     }
 }
 

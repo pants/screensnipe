@@ -17,11 +17,16 @@ void SettingsLoader::loadSettings() {
     file_image_quality = value("image_quality", 80).toInt();
     m_settings->endGroup();
 
+    m_settings->beginGroup("shortcuts");
+    shortcut_drag = value("shrotcut_drag", "Ctrl").toString().toLower();
+    shortcut_resize_ratio = value("shrotcut_resize_ratio", "Shift").toString().toLower();
+    m_settings->endGroup();
+
     m_settings->sync();
 }
 
-QVariant SettingsLoader::value(const QString &key, const QVariant &defaultValue) {
-    auto value = m_settings->value(key, defaultValue);
-    m_settings->setValue(key, value);
+QVariant SettingsLoader::value(const QString &t_key, const QVariant &t_default_value) {
+    auto value = m_settings->value(t_key, t_default_value);
+    m_settings->setValue(t_key, value);
     return value;
 }
