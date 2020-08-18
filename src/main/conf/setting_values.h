@@ -3,8 +3,7 @@
 
 #include <QString>
 
-class SettingValues {
-public:
+struct SettingValues {
     QString screenshot_hotkey;
 
     bool file_save;
