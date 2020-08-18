@@ -44,13 +44,10 @@ bool ScreenCapturer::getActiveScreen(QScreen *&output) {
 
     for (auto screen : screens) {
         auto box = screen->geometry();
-        auto real_width = box.x() + box.width();
-        auto real_height = box.y() + box.height();
 
         auto inUpper = cursor_pos.x() > box.x() && cursor_pos.y() > box.y();
-        auto inBottom = cursor_pos.x() < real_width && cursor_pos.y() < box.height();
+        auto inBottom = cursor_pos.x() < box.width() && cursor_pos.y() < box.height();
         if (inUpper && inBottom) {
-            qDebug() << "Found active screen: " << box;
             output = screen;
             return true;
         }
