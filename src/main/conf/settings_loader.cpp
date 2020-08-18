@@ -7,6 +7,7 @@ SettingsLoader::SettingsLoader() {
 
 void SettingsLoader::loadSettings() {
     screenshot_hotkey = value("screenshot_hotkey", "ctrl+shift+4").toString();
+    screenshot_active_monitor_hotkey = value("screenshot_active_monitor_hotkey", "ctrl+shift+5").toString();
     copy_to_clipboard = value("copy_to_clipboard", true).toBool();
 
     m_settings->beginGroup("file");

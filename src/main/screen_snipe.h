@@ -11,6 +11,7 @@
 #include <QDateTime>
 #include <QSystemTrayIcon>
 #include <QMenu>
+#include <QCursor>
 
 class ScreenSnipe : public QObject {
 Q_OBJECT
@@ -30,6 +31,7 @@ private:
 
     QApplication *m_application = nullptr;
     QHotkey *m_screenshot_hotkey = nullptr;
+    QHotkey *m_screenshot_active_monitor_hotkey = nullptr;
 
     QPixmap m_last_screenshot = QPixmap();
 
@@ -37,6 +39,7 @@ private:
 
     void exit();
     QMenu* createTrayMenu();
+    void takeScreenshotOfActiveMonitor();
     void takeScreenshot();
 };
 

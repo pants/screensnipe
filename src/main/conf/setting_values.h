@@ -5,6 +5,7 @@
 
 struct SettingValues {
     QString screenshot_hotkey;
+    QString screenshot_active_monitor_hotkey;
 
     bool file_save;
     QString file_path;

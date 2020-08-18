@@ -6,12 +6,15 @@
 #include <QRect>
 #include <QPixmap>
 #include <QDesktopWidget>
+#include <QCursor>
+#include <QDebug>
 
 class ScreenCapturer {
 public:
-    explicit ScreenCapturer();
+    bool getActiveScreen(QScreen *&output);
 
     QPixmap captureEntireDesktop();
+    QPixmap captureMonitor(QScreen *t_screen);
 
     //Gets the combined screen dimensions across multiple monitors
     QRect getScreenDimensions();
