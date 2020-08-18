@@ -6,7 +6,10 @@ Config path is generated at: `~/.config/screensnipe/screensnipe.ini`
 #### todo:
 - Config
     - [x] Keyboard Shortcuts
-    - [X] Hotkeys
+    - [ ] Hotkeys
+        - [x] Active monitor
+        - [ ] Entire monitor
+        - [ ] Active window
     - [ ] Upload locations
     - [x] Screenshot save path
 - Selection options
