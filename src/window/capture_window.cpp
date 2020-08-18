@@ -21,6 +21,10 @@ void CaptureWindow::displayCaptureWindow(const QPixmap &t_screenshot, QRect t_sc
 
     //When using X11BypassWindowManagerHint this allows keyboard input into the window, needs to be called after show()
     this->activateWindow();
+
+    //fixes an issue after restarting the window manager while the program is running that the capture window doesn't
+    //get sent to the foreground
+    this->raise();
 }
 
 void CaptureWindow::makeSelection(QPoint t_end_pos) {
