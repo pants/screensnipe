@@ -1,0 +1,9 @@
+#ifndef SCREEN_SNIPE_IMAGE_UPLOADER_H
+#define SCREEN_SNIPE_IMAGE_UPLOADER_H
+
+class ImageUploader {
+
+};
+
+
+#endif //SCREEN_SNIPE_IMAGE_UPLOADER_H
