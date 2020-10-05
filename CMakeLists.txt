@@ -8,6 +8,7 @@ set(CMAKE_AUTOUIC ON)
 find_package(X11 REQUIRED)
 find_package(Qt5X11Extras REQUIRED)
 find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Network REQUIRED)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -21,4 +22,4 @@ set(qhotkey_src QHotkey/QHotkey/qhotkey.cpp QHotkey/QHotkey/qhotkey_x11.cpp)
 add_executable(screen_snipe ${qhotkey_src} ${SOURCE_FILES})
 
 target_include_directories(${PROJECT_NAME} PUBLIC QHotkey/QHotkey)
-target_link_libraries(screen_snipe Qt5::Widgets Qt5::X11Extras X11)
+target_link_libraries(screen_snipe Qt5::Widgets Qt5::X11Extras Qt5::Network X11)
