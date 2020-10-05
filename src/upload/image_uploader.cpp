@@ -17,51 +17,35 @@ void ImageUploader::uploadImage(QBuffer &t_fileBuffer) {
     qDebug() << "Setting up request body..";
     setupRequestBody(*multipart, post_data, t_fileBuffer);
 
-    auto *net_manager = new QNetworkAccessManager(this);
-    connect(net_manager, SIGNAL(finished(QNetworkReply * )), this,
+    auto *netManager = new QNetworkAccessManager(this);
+    connect(netManager, SIGNAL(finished(QNetworkReply * )), this,
             SLOT(onNetworkReply(QNetworkReply * )));
 
     QNetworkReply *reply;
     qDebug() << "Uploading image...";
     if (m_uploadConfig->multipart) {
-        reply = net_manager->post(request, multipart);
+        reply = netManager->post(request, multipart);
     } else {
-        reply = net_manager->post(request, post_data);
+        reply = netManager->post(request, post_data);
     }
 
     //clean up memory
     connect(reply, SIGNAL(finished()), reply, SLOT(deleteLater()));
-    connect(reply, SIGNAL(destroyed()), net_manager, SLOT(deleteLater()));
+    connect(reply, SIGNAL(destroyed()), netManager, SLOT(deleteLater()));
 }
 
 void ImageUploader::onNetworkReply(QNetworkReply *t_reply) {
     QByteArray responseData = t_reply->readAll();
 
-    const QString responseString = QString::fromUtf8(responseData);
+    QString responseString = QString::fromUtf8(responseData);
     QString constructedResponse = m_uploadConfig->response_format;
 
     auto contentType = t_reply->header(QNetworkRequest::ContentTypeHeader);
     if (contentType.toString().toLower().contains("application/json")) {
-        auto document = QJsonDocument::fromJson(responseData);
-        auto jsonObject = document.object();
-
         QStringList keys;
         StringUtils::getKeysFromString(m_uploadConfig->response_format, &keys);
 
-        for (const auto &variable : keys) {
-            QString jsonKey = variable.mid(1, variable.length() - 2);
-            auto jsonObj = jsonObject[jsonKey];
-
-            if (!jsonObj.isNull()) {
-                QString jsonEntry = jsonObj.toString();
-                qDebug() << "Variable: " << jsonKey << " var " << jsonEntry << constructedResponse;
-                constructedResponse.replace(variable, jsonEntry);
-            } else {
-                qCritical() << "Expected json key '" << jsonKey << "' but it wasn't found!";
-                qCritical() << "Problem String: " << m_uploadConfig->response_format;
-                qCritical() << "Problem Response: " << responseString;
-            }
-        }
+        replaceStringJsonKeys(&constructedResponse, keys, responseString);
     } else {
         constructedResponse += responseString;
     }
@@ -108,6 +92,7 @@ void ImageUploader::setupRequestBody(
             QHttpPart part;
 
             if (arg_value == "%file%") {
+                //todo: have actually fill in the correct image formats..
                 part.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("image/jpeg"));
                 auto form_header_value = QVariant("form-data; name=\"" + arg_name + "\"; filename=\"image.jpg\"");
                 part.setHeader(QNetworkRequest::ContentDispositionHeader, form_header_value);
@@ -124,6 +109,26 @@ void ImageUploader::setupRequestBody(
             if (i != m_uploadConfig->request_args.size() - 1) {
                 t_postData.append(QString('&').toUtf8());
             }
+        }
+    }
+}
+
+void ImageUploader::replaceStringJsonKeys(QString *t_string, QStringList &t_keys, QString &t_responseData) {
+    auto document = QJsonDocument::fromJson(t_responseData.toUtf8());
+    auto jsonObject = document.object();
+
+    for (const auto &variable : t_keys) {
+        QString jsonKey = variable.mid(1, variable.length() - 2);
+        auto jsonObj = jsonObject[jsonKey];
+
+        if (!jsonObj.isNull()) {
+            QString jsonEntry = jsonObj.toString();
+            qDebug() << "Variable: " << jsonKey << " var " << jsonEntry << t_string;
+            t_string->replace(variable, jsonEntry);
+        } else {
+            qCritical() << "Expected json key '" << jsonKey << "' but it wasn't found!";
+            qCritical() << "Problem String: " << m_uploadConfig->response_format;
+            qCritical() << "Problem Response: " << t_responseData;
         }
     }
 }

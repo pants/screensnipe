@@ -42,6 +42,8 @@ private:
 
     void setupRequestBody(QHttpMultiPart &t_multipart, QByteArray &t_post_data, QBuffer &t_file_buffer);
 
+    void replaceStringJsonKeys(QString *t_string, QStringList &t_keys, QString &t_responseData);
+
     UploadConfig* m_uploadConfig;
     bool m_copyToClipboard;
 private slots:
